@@ -12,7 +12,6 @@
     <Folder Include="Questao04\" />
     <Folder Include="Questao03\" />
     <Folder Include="Questao02\" />
-    <Folder Include="Questao01\" />
   </ItemGroup>
 
 </Project>
