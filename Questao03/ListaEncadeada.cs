@@ -17,7 +17,7 @@ namespace Lista01Code.Questao03
             contador = 0;
         }
 
-        public void Adicionar(int valor)
+        public void Inserir(int valor)
         {
             No novoNo = new No(valor);
             if (cabeca == null)
@@ -36,7 +36,7 @@ namespace Lista01Code.Questao03
             contador++;
         }
 
-        public void ImprimirLista()
+        public void Imprimir()
         {
             No atual = cabeca;
             while (atual != null)
@@ -49,14 +49,14 @@ namespace Lista01Code.Questao03
 
         public ListaEncadeada InverterLista()
         {
-            ListaEncadeada reversedList = new ListaEncadeada();
+            ListaEncadeada listaReversa = new ListaEncadeada();
             No atual = cabeca;
             while (atual != null)
             {
-                reversedList.AdicionarNaFrente(atual.Valor);
+                listaReversa.InserirNaFrente(atual.Valor);
                 atual = atual.Proximo;
             }
-            return reversedList;
+            return listaReversa;
         }
 
         public ListaEncadeada SomarMeiaLista()
@@ -66,13 +66,13 @@ namespace Lista01Code.Questao03
             for (int i = 0; i < contador / 2; i++)
             {
                 int sum = atual.Valor + PegarNoNaPosicao(contador - i - 1).Valor;
-                somarMeiaLista.Adicionar(sum);
+                somarMeiaLista.Inserir(sum);
                 atual = atual.Proximo;
             }
             return somarMeiaLista;
         }
 
-        private void AdicionarNaFrente(int valor)
+        private void InserirNaFrente(int valor)
         {
             No novoNo = new No(valor);
             novoNo.Proximo = cabeca;

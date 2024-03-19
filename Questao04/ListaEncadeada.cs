@@ -17,12 +17,12 @@ namespace Lista01Code.Questao04
             contador = 0;
         }
 
-        public void Adicionar(char value)
+        public void Inserir(char value)
         {
-            No newNode = new No(value);
+            No novoNo = new No(value);
             if (cabeca == null)
             {
-                cabeca = newNode;
+                cabeca = novoNo;
             }
             else
             {
@@ -31,7 +31,7 @@ namespace Lista01Code.Questao04
                 {
                     atual = atual.Proximo;
                 }
-                atual.Proximo = newNode;
+                atual.Proximo = novoNo;
             }
             contador++;
         }

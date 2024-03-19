@@ -30,7 +30,7 @@ namespace Lista01Code.Questao05
         }
 
         // b) Método para localizar um valor na matriz
-        public int Find(int linha, int coluna)
+        public int Procurar(int linha, int coluna)
         {
             for (int i = 0; i < linhas.Count; i++)
             {

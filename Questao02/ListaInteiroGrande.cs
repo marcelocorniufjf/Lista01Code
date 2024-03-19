@@ -34,11 +34,11 @@ namespace Lista01Code.Questao02
             ListaInteiroGrande resultado = new ListaInteiroGrande();
             No atual1 = lista1.cabeca;
             No atual2 = lista2.cabeca;
-            int carry = 0;
+            int somatorio = 0;
 
-            while (atual1 != null || atual2 != null || carry != 0)
+            while (atual1 != null || atual2 != null || somatorio != 0)
             {
-                int soma = carry;
+                int soma = somatorio;
                 if (atual1 != null)
                 {
                     soma += atual1.digito;
@@ -50,7 +50,7 @@ namespace Lista01Code.Questao02
                     atual2 = atual2.proximo;
                 }
 
-                carry = soma / 10;
+                somatorio = soma / 10;
                 int digitoSoma = soma % 10;
                 resultado.InserirDigito(digitoSoma);
             }
