@@ -1,0 +1,978 @@
+\documentclass[portuguese,12pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{babel}
+\title{Lista 01 de exercícios AED}
+\author{Marcelo Corni Alves}
+\begin{document}
+	\maketitle
+
+\begin{center}
+	Códigos das implementações da lista de exercícios disponíveis em
+	 \textbf{\url{https://github.com/marcelocorniufjf/Lista01Code}}
+\end{center}
+
+
+\section*{Listas, Pilhas e Filas}
+
+\paragraph{1-)}
+Para cada estrutura abaixo, implemente os métodos contido(K,L), inserir(K,L) e remover(K,L) e verifique as complexidades de cada método.
+
+No caso de filas e pilhas, o remover(K,L) não terá o argumento K, visto que filas e pilhas removem sempre quem está na extremidade.
+
+\paragraph{a-)}
+Lista duplamente encadeada: considere a inserção sempre no final da lista
+
+\lstset{language=C++,
+	basicstyle=\footnotesize,
+	numbers=left,
+	numberstyle=\footnotesize,
+	frame=shadowbox}
+\begin{lstlisting} 
+public class No
+{
+  public int chave;
+  public No proximo;
+  public No anterior;
+
+  public No(int chave)
+  {
+    this.chave = chave;
+    proximo = null;
+    anterior = null;
+  }
+}
+
+public class ListaDuplamenteEncadeada
+{
+  private No cabeca;
+  private No cauda;
+
+  public ListaDuplamenteEncadeada()
+  {
+    cabeca = null;
+    cauda = null;
+  }
+
+  public bool Contido(int chave)
+  {
+    No atual = cabeca;
+    while (atual != null)
+    {
+      if (atual.chave == chave)
+      {
+        return true;
+      }
+      atual = atual.proximo;
+    }
+    return false;
+  }
+
+  public void Inserir(int chave)
+  {
+    No novoNo = new No(chave);
+    if (cabeca == null)
+    {
+      cabeca = novoNo;
+      cauda = novoNo;
+    }
+    else
+    {
+      cauda.proximo = novoNo;
+      novoNo.anterior = cauda;
+      cauda = novoNo;
+    }
+  }
+
+  public void Remover(int chave)
+  {
+    No atual = cabeca;
+    while (atual != null)
+    {
+      if (atual.chave == chave)
+      {
+        if (atual.anterior != null)
+        {
+          atual.anterior.proximo = atual.proximo;
+        }
+        else
+        {
+          cabeca = atual.proximo;
+        }
+        if (atual.proximo != null)
+        {
+          atual.proximo.anterior = atual.anterior;
+        }
+        else
+        {
+          cauda = atual.anterior;
+        }
+        return;
+      }
+      atual = atual.proximo;
+    }
+  }
+}
+
+\end{lstlisting}
+
+\paragraph{Complexidades:}
+	A complexidade de tempo para Contido(K,L) é O(n), para Inserir(K,L) é O(1), e para Remover(L) é O(n), onde n é o número de elementos na lista.
+	
+
+\paragraph{b-)}
+Fila com lista simplesmente encadeada: considere que vc tem uma variável head e uma tail, onde head marca a cabeça e tail o ultimo nó na cauda.
+
+
+\lstset{language=C++,
+	basicstyle=\footnotesize,
+	numbers=left,
+	numberstyle=\footnotesize,
+	frame=shadowbox}
+\begin{lstlisting} 
+public class No
+{
+  public int chave;
+  public No proximo;
+
+  public No(int chave)
+  {
+    this.chave = chave;
+    this.proximo = null;
+  }
+}
+
+public class Fila
+{
+  private No cabeca;
+  private No cauda;
+
+  public Fila()
+  {
+    this.cabeca = null;
+    this.cauda = null;
+  }
+
+  public bool Contido(int chave)
+  {
+    No atual = this.cabeca;
+    while (atual != null)
+    {
+      if (atual.chave == chave)
+      {
+        return true;
+      }
+      atual = atual.proximo;
+    }
+    return false;
+  }
+
+  public void Inserir(int chave)
+  {
+    No novoNo = new No(chave);
+    if (this.cabeca == null)
+    {
+      this.cabeca = novoNo;
+      this.cauda = novoNo;
+    }
+    else
+    {
+      this.cauda.proximo = novoNo;
+      this.cauda = novoNo;
+    }
+  }
+
+  public void Remover()
+  {
+    if (this.cabeca != null)
+    {
+      this.cabeca = this.cabeca.proximo;
+      if (this.cabeca == null)
+      {
+        this.cauda = null;
+      }
+    }
+  }
+}
+\end{lstlisting}
+
+\paragraph{Complexidades:}
+A complexidade de tempo para Contido(K,L) é O(n), para Inserir(K,L) é O(1), e para Remover(L) é O(1), onde n é o número de elementos na fila.
+
+
+\paragraph{c-)}
+Pilha com lista simplesmente encadeada
+
+\lstset{language=C++,
+	basicstyle=\footnotesize,
+	numbers=left,
+	numberstyle=\footnotesize,
+	frame=shadowbox}
+\begin{lstlisting} 
+public class No
+{
+  public int chave;
+  public No proximo;
+
+  public No(int chave)
+  {
+    this.chave = chave;
+    this.proximo = null;
+  }
+}
+
+public class Pilha
+{
+  private No topo;
+
+  public Pilha()
+  {
+    this.topo = null;
+  }
+
+  public bool Contido(int chave)
+  {
+    No atual = this.topo;
+    while (atual != null)
+    {
+      if (atual.chave == chave)
+      {
+        return true;
+      }
+      atual = atual.proximo;
+    }
+    return false;
+  }
+
+  public void Inserir(int chave)
+  {
+    No novoNo = new No(chave);
+    if (this.topo == null)
+    {
+      this.topo = novoNo;
+    }
+    else
+    {
+      novoNo.proximo = this.topo;
+      this.topo = novoNo;
+    }
+  }
+
+  public void Remover()
+  {
+    if (this.topo != null)
+    {
+      this.topo = this.topo.proximo;
+    }
+  }
+}
+\end{lstlisting}	
+
+\paragraph{Complexidades:}
+A complexidade de tempo para Contido(K,L) é O(n), para Inserir(K,L) é O(1), e para Remover(L) é O(1), onde n é o número de elementos na pilha.
+	
+\paragraph{d-)}
+Lista duplamente encadeada circular
+
+\lstset{language=C++,
+	basicstyle=\footnotesize,
+	numbers=left,
+	numberstyle=\footnotesize,
+	frame=shadowbox}
+\begin{lstlisting} 
+public class No
+{
+  public int chave;
+  public No proximo;
+  public No anterior;
+
+  public No(int chave)
+  {
+    this.chave = chave;
+    this.proximo = null;
+    this.anterior = null;
+  }
+}
+
+public class ListaDuplamenteEncadeadaCircular
+{
+  private No cabeca;
+  private No cauda;
+
+  public ListaDuplamenteEncadeadaCircular()
+  {
+    this.cabeca = null;
+    this.cauda = null;
+  }
+
+  public bool Contido(int chave)
+  {
+    No atual = this.cabeca;
+    
+    
+    while (atual != null && atual != this.cauda)
+    {
+      if (atual.chave == chave)
+      {
+        return true;
+      }
+      atual = atual.proximo;
+    }
+    if (this.cauda != null && this.cauda.chave == chave)
+    {
+      return true;
+    }
+    return false;
+  }
+
+  public void Inserir(int chave)
+  {
+    No novoNo = new No(chave);
+    if (this.cabeca == null)
+    {
+      this.cabeca = novoNo;
+      this.cauda = novoNo;
+      novoNo.proximo = novoNo;
+      novoNo.anterior = novoNo;
+    }
+    else
+    {
+      novoNo.proximo = this.cabeca;
+      novoNo.anterior = this.cauda;
+      this.cabeca.anterior = novoNo;
+      this.cauda.proximo = novoNo;
+      this.cauda = novoNo;
+    }
+  }
+
+  public void Remover(int chave)
+  {
+    No atual = this.cabeca;
+    while (atual != null && atual != this.cauda)
+    {
+      if (atual.chave == chave)
+      {
+        atual.anterior.proximo = atual.proximo;
+        atual.proximo.anterior = atual.anterior;
+        if (atual == this.cabeca)
+        {
+          this.cabeca = atual.proximo;
+        }
+        
+        if (atual == this.cauda)
+        {
+          this.cauda = atual.anterior;
+        }
+       return;
+      }
+      atual = atual.proximo;
+    }
+    if (this.cauda != null && this.cauda.chave == chave)
+    {
+      this.cauda.anterior.proximo = this.cabeca;
+      this.cabeca.anterior = this.cauda.anterior;
+      this.cauda = this.cauda.anterior;
+    }
+  }
+}
+\end{lstlisting}		
+
+\paragraph{Complexidades:}
+A complexidade de tempo para Contido(K,L) é O(n), para Inserir(K,L) é O(1), e para Remover(L) é O(n) no pior caso (quando o elemento a ser removido está no final da lista).
+
+
+\paragraph{2-)}
+Listas são usadas para representar números muito grandes (p.ex, com 1000 dígitos), uma vez que seria impossível representá-lo em máquinas de 64bits. 
+
+Para representar inteiros grandes com listas, é usada uma representação em que cada dígito do inteiro é armazenado em um nó da lista.\newline
+
+Considere duas listas encadeadas L1 e L2 representando números grandes (cada 
+digito por nó).
+
+Faça um algoritmo que faça a soma de dois inteiros grandes e retorne a lista L3 = L1 + L2.
+
+\lstset{language=C++,
+	basicstyle=\footnotesize,
+	numbers=left,
+	numberstyle=\footnotesize,
+	frame=shadowbox}
+\begin{lstlisting} 
+public class No
+{
+  public int digito;
+  public No proximo;
+
+  public No(int digito)
+  {
+    this.digito = digito;
+    this.proximo = null;
+  }
+}
+
+public class ListaInteiroGrande
+{
+  private No cabeca;
+
+  public ListaInteiroGrande()
+  {
+    this.cabeca = null;
+  }
+
+  public void InserirDigito(int digito)
+  {
+    No novoNo = new No(digito);
+    if (this.cabeca == null)
+    {
+      this.cabeca = novoNo;
+    }
+    else
+    {
+      novoNo.proximo = this.cabeca;
+      this.cabeca = novoNo;
+    }
+  }
+
+  public ListaInteiroGrande Soma(ListaInteiroGrande lista1,
+                                 ListaInteiroGrande lista2)
+  {
+    ListaInteiroGrande resultado = new ListaInteiroGrande();
+    No atual1 = lista1.cabeca;
+    No atual2 = lista2.cabeca;
+    int somatorio = 0;
+
+    while (atual1 != null || atual2 != null || somatorio != 0)
+    {
+      int soma = somatorio;
+      if (atual1 != null)
+      {
+        soma += atual1.digito;
+        atual1 = atual1.proximo;
+      }
+      if (atual2 != null)
+      {
+        soma += atual2.digito;
+        atual2 = atual2.proximo;
+      }
+      somatorio = soma / 10;
+      int digitoSoma = soma % 10;
+      resultado.InserirDigito(digitoSoma);
+    }
+    return resultado;
+  }
+
+  public void Imprimir()
+  {
+    No atual = this.cabeca;
+    while (atual != null)
+    {
+      Console.Write(atual.digito);
+      atual = atual.proximo;
+    }
+    Console.WriteLine();
+  }
+}
+\end{lstlisting}	
+
+\paragraph{3-)}
+Seja L uma lista simplesmente encadeada. Escreva um algoritmo que, percorrendo a lista uma única vez, constrói:
+
+A. Uma lista L’ que possui os valores de L em ordem inversa
+
+B. Uma lista L’' que possui a metade dos nós da lista L, onde o primeiro nó de L’' contém a soma do primeiro nó de L com o último nó de L, o segundo nó de L’ contém a soma do segundo nó de L com o penúltimo nó de L e assim por diante: L''= < L1+Ln, L2+Ln-1, L3+Ln-2, ... , Ln/2 + Ln/2+1>, onde n é sempre par.\newline
+
+\lstset{language=C++,
+	basicstyle=\footnotesize,
+	numbers=left,
+	numberstyle=\footnotesize,
+	frame=shadowbox}
+\begin{lstlisting} 
+public class No
+{
+  public int Valor { get; set; }
+  public No Proximo { get; set; }
+
+  public No(int valor)
+  {
+    Valor = valor;
+    Proximo = null;
+  }
+}
+
+public class ListaEncadeada
+{
+  private No cabeca;
+  private int contador;
+
+  public ListaEncadeada()
+  {
+    cabeca = null;
+    contador = 0;
+  }
+
+  public void Inserir(int valor)
+  {
+    No novoNo = new No(valor);
+    if (cabeca == null)
+    {
+      cabeca = novoNo;
+    }
+    else
+    {
+      No atual = cabeca;
+      while (atual.Proximo != null)
+      {
+        atual = atual.Proximo;
+      }
+      atual.Proximo = novoNo;
+    }
+    contador++;
+  }
+
+  public void Imprimir()
+  {
+    No atual = cabeca;
+    while (atual != null)
+    {
+      Console.Write(atual.Valor + " ");
+      atual = atual.Proximo;
+    }
+    Console.WriteLine();
+  }
+
+  public ListaEncadeada InverterLista()
+  {
+    ListaEncadeada listaReversa = new ListaEncadeada();
+    No atual = cabeca;
+    while (atual != null)
+    {
+      listaReversa.InserirNaFrente(atual.Valor);
+      atual = atual.Proximo;
+    }
+    return listaReversa;
+  }
+
+  public ListaEncadeada SomarMeiaLista()
+  {
+    ListaEncadeada somarMeiaLista = new ListaEncadeada();
+    No atual = cabeca;
+    for (int i = 0; i < contador / 2; i++)
+    {
+    	
+      int sum = atual.Valor 
+                + PegarNoNaPosicao(contador - i - 1).Valor;
+      somarMeiaLista.Inserir(sum);
+      atual = atual.Proximo;
+    }
+    return somarMeiaLista;
+  }
+
+  private void InserirNaFrente(int valor)
+  {
+    No novoNo = new No(valor);
+    novoNo.Proximo = cabeca;
+    cabeca = novoNo;
+    contador++;
+  }
+
+  private No PegarNoNaPosicao(int posicao)
+  {
+    if (posicao < 0 || posicao >= contador)
+    {
+      throw new ArgumentOutOfRangeException(nameof(posicao));
+    }
+
+    No atual = cabeca;
+    for (int i = 0; i < posicao; i++)
+    {
+      atual = atual.Proximo;
+    }
+    return atual;
+  }
+}
+\end{lstlisting}	
+
+\paragraph{4-)}
+Escreva um algoritmo para reconhecer se uma dada palavra é um palíndromo. 
+
+Considere que a palavra está contida em uma lista simplesmente encadeada, onde cada caractere está em um nó da lista.
+
+
+\lstset{language=C++,
+	basicstyle=\footnotesize,
+	numbers=left,
+	numberstyle=\footnotesize,
+	frame=shadowbox}
+\begin{lstlisting} 
+public class No
+{
+  public char Valor { get; set; }
+  public No Proximo { get; set; }
+
+  public No(char value)
+  {
+    Valor = value;
+    Proximo = null;
+  }
+}
+
+public class ListaEncadeada
+{
+  private No cabeca;
+  private int contador;
+
+  public ListaEncadeada()
+  {
+    cabeca = null;
+    contador = 0;
+  }
+
+  public void Inserir(char value)
+  {
+    No novoNo = new No(value);
+    if (cabeca == null)
+    {
+      cabeca = novoNo;
+    }
+    else
+    {
+      No atual = cabeca;
+      while (atual.Proximo != null)
+      {
+        atual = atual.Proximo;
+      }
+      atual.Proximo = novoNo;
+    }
+    contador++;
+  }
+
+  public bool EPalindromo()
+  {
+    No lenta = cabeca;
+    No rapida = cabeca;
+    Stack<char> pilha = new Stack<char>();
+
+    while (rapida != null && rapida.Proximo != null)
+    {
+      pilha.Push(lenta.Valor);
+      lenta = lenta.Proximo;
+      rapida = rapida.Proximo.Proximo;
+    }
+
+    if (rapida != null)
+    {
+      lenta = lenta.Proximo;
+    }
+
+    while (lenta != null)
+    {
+      if (pilha.Pop() != lenta.Valor)
+      {
+        return false;
+      }
+      lenta = lenta.Proximo;
+    }
+
+    return true;
+  }
+}
+\end{lstlisting}
+
+
+\paragraph{5-)}
+Seja A uma matriz esparsa n x m.
+\paragraph{a-)}
+Crie uma estrutura de dados que represente A e cujo espaço total seja O(k) em vez de O(mn), onde k é o número total de elementos não irrelevantes de A.
+
+\paragraph{b-)}
+Faça um algoritmo para localizar um valor $a_{ij}$ na estrutura acima.
+\paragraph{c-)}
+Faça um algoritmo para computar $A^2$ utilizando a estrutura acima. Para tal, crie os algoritmos de inserção e busca na sua estrutura.
+\paragraph{d-)}
+Qual a complexidade da sua solução para a letra (c)?
+\newline\newline
+\textbf{R:} O($k^2$), onde k é o número total de elementos não irrelevantes da matriz esparsa.
+
+\paragraph{5.5-)}
+Caso não tenha pensado numa estrutura com duas listas (uma para colunas e uma para
+linhas), recomenda-se refazer o exercício acima com essa forma de estruturação.\newline\newline\newline\newline
+
+\textbf{Solução para letras a-), b-) e c-):}
+
+\lstset{language=C++,
+	basicstyle=\footnotesize,	
+	numbers=left,
+	numberstyle=\footnotesize,
+	frame=shadowbox}
+\begin{lstlisting} 
+public class MatrizEsparsa
+{
+  // Estrutura de dados para representar a matriz esparsa
+  private List<int> linhas;
+  private List<int> colunas;
+  private List<int> valores;
+
+  // Construtor para inicializar a matriz esparsa
+  public MatrizEsparsa()
+  {
+    linhas = new List<int>();
+    colunas = new List<int>();
+    valores = new List<int>();
+  }
+
+  // a) Metodo para inserir um valor na matriz
+  public void Inserir(int linha, int coluna, int valor)
+  {
+    linhas.Add(linha);
+    colunas.Add(coluna);
+    valores.Add(valor);
+  }
+
+  // b) Metodo para localizar um valor na matriz
+  public int Procurar(int linha, int coluna)
+  {
+    for (int i = 0; i < linhas.Count; i++)
+    {
+      if (linhas[i] == linha && colunas[i] == coluna)
+      {
+        return valores[i];
+      }
+    }
+    return 0; // Valor irrelevante se nao encontrado
+  }
+
+  // c) Metodo para calcular A^2 utilizando a estrutura
+  public MatrizEsparsa Quadrado()
+  {
+    MatrizEsparsa result = new MatrizEsparsa();
+    for (int i = 0; i < linhas.Count; i++)
+    {
+      int linhaAtual = linhas[i];
+      int colunaAtual = colunas[i];
+      int valorAtual = valores[i];
+      for (int j = 0; j < linhas.Count; j++)
+      {
+        if (colunaAtual == linhas[j])
+        {
+          int proximaColuna = colunas[j];
+          int proximoValor = valores[j];
+          int produto = valorAtual * proximoValor;
+          result.Inserir(linhaAtual, proximaColuna, produto);
+        }
+      }
+    }
+    return result;
+  }
+
+  // Metodo para imprimir a matriz esparsa
+  public void Imprimir()
+  {
+    for (int i = 0; i < linhas.Count; i++)
+    {
+      Console.WriteLine("({0}, {1}): {2}", 
+                                linhas[i], 
+                               colunas[i], 
+                              valores[i]);
+    }
+  }
+}
+\end{lstlisting}
+
+
+\paragraph{}
+\textbf{Código para execução de testes dos códigos da lista de exercícios}\newline\newline
+
+\lstset{language=C++,
+	basicstyle=\footnotesize,	
+	numbers=left,
+	numberstyle=\footnotesize,
+	frame=shadowbox}
+\begin{lstlisting} 
+Console.WriteLine("Codigos da Lista 01 de exercicios de AED");
+
+//Questao 01 - Letra A - Exemplos de uso
+
+var q01A = new Lista01Code.Questao01.LetraA
+               .ListaDuplamenteEncadeada();
+
+q01A.Inserir(10);
+q01A.Inserir(5);
+q01A.Inserir(6);
+q01A.Inserir(55);
+
+var procurar01AChave6 = q01A.Contido(6);
+
+Console.WriteLine(procurar01AChave6);
+
+//Remove a chave 6
+q01A.Remover(6);
+
+procurar01AChave6 = q01A.Contido(6);
+
+Console.WriteLine(procurar01AChave6);
+
+
+//Questao 01 - Letra B - Exemplos de uso
+
+var q01B = new Lista01Code.Questao01.LetraB.Fila(); //FIFO
+
+q01B.Inserir(10);
+q01B.Inserir(5);
+q01B.Inserir(6);
+q01B.Inserir(55);
+
+var procurar01BChave10 = q01B.Contido(10);
+
+Console.WriteLine(procurar01BChave10);
+
+
+//Remove a chave 10
+q01B.Remover();
+
+procurar01BChave10 = q01B.Contido(10);
+Console.WriteLine(procurar01BChave10);
+
+
+//Questao 01 - Letra C - Exemplo de uso
+
+var q01C = new Lista01Code.Questao01.LetraC.Pilha(); //LIFO
+
+q01C.Inserir(10);
+q01C.Inserir(5);
+q01C.Inserir(6);
+q01C.Inserir(55);
+
+var procurar01CChave55 = q01C.Contido(55);
+
+Console.WriteLine(procurar01CChave55);
+
+
+//Remove a chave 55
+q01C.Remover();
+
+procurar01CChave55 = q01C.Contido(55);
+Console.WriteLine(procurar01CChave55);
+
+//Questao 01 - Letra D - Exemplo de uso
+
+var q01D = new Lista01Code.Questao01.LetraD
+               .ListaDuplamenteEncadeadaCircular();
+
+q01D.Inserir(10);
+q01D.Inserir(5);
+q01D.Inserir(6);
+q01D.Inserir(55);
+
+var procurar01DChave55 = q01D.Contido(55);
+
+Console.WriteLine(procurar01DChave55);
+
+//Remove a chave 55
+q01D.Remover(55);
+
+procurar01DChave55 = q01D.Contido(55);
+Console.WriteLine(procurar01DChave55);
+
+
+//Questao 02 - Exemplo de uso
+
+var q02Lista1 = new Lista01Code.Questao02.ListaInteiroGrande();
+
+var q02Lista2 = new Lista01Code.Questao02.ListaInteiroGrande();
+
+var q02Lista3 = new Lista01Code.Questao02.ListaInteiroGrande();
+
+q02Lista1.InserirDigito(9);
+q02Lista1.InserirDigito(9);
+q02Lista1.InserirDigito(9);
+
+q02Lista2.InserirDigito(5);
+q02Lista2.InserirDigito(1);
+q02Lista2.InserirDigito(2);
+
+//Somar as listas - Resultado esperado 1511 = (999 + 512)
+q02Lista3 = q02Lista3.Soma(q02Lista1, q02Lista2);
+q02Lista3.Imprimir();
+
+
+//Questao 03 - Exemplo de uso
+var q03 = new Lista01Code.Questao03.ListaEncadeada();
+
+q03.Inserir(10);
+q03.Inserir(5);
+q03.Inserir(6);
+q03.Inserir(55);
+
+q03.Imprimir();
+
+q03 = q03.InverterLista();
+
+q03.Imprimir();
+
+var q03Soma = new Lista01Code.Questao03.ListaEncadeada();
+
+q03Soma = q03.SomarMeiaLista();
+
+q03Soma.Imprimir();
+
+//Questao 04 - Exemplo de uso
+
+var q0401 = new Lista01Code.Questao04.ListaEncadeada();
+
+q0401.Inserir('R');
+q0401.Inserir('A');
+q0401.Inserir('D');
+q0401.Inserir('A');
+q0401.Inserir('R');
+
+Console.WriteLine(q0401.EPalindromo() ? 
+                       "E palindromo" : 
+                   "Nao e Palindromo");
+
+var q0402 = new Lista01Code.Questao04.ListaEncadeada();
+
+q0402.Inserir('B');
+q0402.Inserir('A');
+q0402.Inserir('T');
+q0402.Inserir('A');
+q0402.Inserir('T');
+q0402.Inserir('A');
+
+Console.WriteLine(q0402.EPalindromo() ? 
+                       "E palindromo" : 
+                   "Nao e Palindromo");
+
+
+//Questao 05 - Exemplo de uso
+
+var q05 = new Lista01Code.Questao05.MatrizEsparsa();
+
+// a) Inserindo valores na matriz
+q05.Inserir(0, 0, 2);
+q05.Inserir(0, 1, 3);
+q05.Inserir(0, 2, 4);
+q05.Inserir(1, 0, 5);
+q05.Inserir(1, 1, 6);
+q05.Inserir(1, 2, 7);
+
+Console.WriteLine("Matriz Esparsa:");
+q05.Imprimir();
+
+
+// b) Localizando um valor na matriz
+int valor = q05.Procurar(1, 0);
+Console.WriteLine("Valor encontrado: " + valor);
+
+// c) Calculando A^2
+var q05Quadrado = q05.Quadrado();
+Console.WriteLine("Matriz A^2:");
+q05Quadrado.Imprimir();
+
+// d) complexidade O(k^2) do medodo Quadrado(), sendo K 
+o numero de elementos nao irrelevantes.
+
+Console.ReadKey();
+
+\end{lstlisting}
+
+\end{document}
